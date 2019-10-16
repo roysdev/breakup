@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load svg %}
+
+<section class="main__content" >
+    <h3>{{ post.title }}</h3>
+    <hr>
+    {{ post.content|safe  }}
+    <hr>
+    {% include 'posts/post_info.html' %}
+
+    <br>
+    {% if request.user.is_authenticated %}
+
+    <form class="form__like-btn" action="{% url 'posts:like_post' %}" method="POST">
+    {% csrf_token %}
+    {% if  is_liked %}
+        <button class="btn" type="submit" name="post_id" value="{{ post.id }}">Dislike</button>
+        {% else %}
+        <button class="btn" type="submit" name="post_id" value="{{ post.id }}">Like</button>
+    {% endif %}
+    </form> || 
+
+    {% if request.user == post.user %}
+    <a class="btn icon" href="{% url 'posts:delete' pk=post.pk %}">{% svg 'cross' %} </a> || <a class="btn icon" href="{% url 'posts:update' pk=post.pk %}">{% svg 'pencil' %}</a>
+    {% endif  %}
+    
+    
+
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <hr>
+
+    <h4>Commment Section</h4>
+
+
+        {% for comment in post.comments.all %}
+            <div class="card">
+                <p class="info">{{ comment.text }} <br>
+                <small><a href="{% url 'account:detail' comment.user %}">{{ comment.user }}</a>  |  {{ comment.date_created|timesince }}</small></p>
+            </div>
+            <br>
+        {% empty %}
+            <p>There are no comments yet.</p>
+        {% endfor %}
+        
+        <br>
+        <hr>
+        <br>
+        
+        {% if user.is_authenticated %}
+        <h5>Add a new comment</h5>
+        <form class="comment-form" action="" method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <p><input type="submit" value="Add comment"></p>
+        </form>
+
+        {% else %}
+            <p>You must be logged in to comment!</p>
+        {% endif %}
+</section>
+{% endblock %}
+

@@ -1,0 +1,5 @@
+<form method='GET' action='{% url "posts:list" %}' class="search">
+    <input class="search__bar" type='text' name='q' placeholder='Search' value='{{ request.GET.q }}'/>
+</form>
+
+

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% load svg %}
+{% block sidebar %}
+
+    <div class="user-icon u-margin-top-small">
+            <img class="user-icon__img user-pic user-pic--medium" src="{{profile_owner.profile.image.url}}" alt="">
+            <h2 class="user-icon__text" >{{ profile_owner}}</h2>
+    </div>
+
+    <hr>
+    <h5>Following <small>({{profile_owner.profile.get_following.count}})</small></h5>
+    <h5><a href="{% url 'account:followers' profile_owner %}">Followers </a><small>({{profile_owner.followed_by.all.count}})</small></h5>
+    {% if user.is_authenticated and profile_owner != request.user %}
+
+        <form action="{% url 'account:follow' %}" method="POST">
+            {% csrf_token %}
+    
+            {% if is_following %}
+                <button class="btn font-medium" type="submit" name="profile_user" value="{{ profile_owner.username}}">Unfollow</button>
+            {% else %}
+                <button class="btn font-medium" type="submit" name="profile_user" value="{{ profile_owner.username}}">Follow</button>
+            {% endif %}
+    
+            </form> 
+    
+    {% endif %}
+    <hr>
+
+    
+ 
+    
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<h3>Posts:</h3>
+
+<br>
+<div class="main__content user-icons-container--sidebar">
+    {% for user in followings %}
+    <div class="user-icon">
+        <img class="user-icon__img user-pic user-pic--small" src="{{user.profile.image.url}}" alt=""> 
+        <a class="user-icon__link" href="{% url 'account:detail' user.username %}">{{user.username}}</a>
+    </div>
+    {% empty %}
+    <p>Not following</p>
+    {% endfor %}
+</div>
+
+<br>
+<br>
+
+<div class="main__pagination">
+    <span class="step-links">
+        {% if followings.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ followings.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ followings.number }} of {{ followings.paginator.num_pages }}.
+        </span>
+
+        {% if followings.has_next %}
+            <a href="?page={{ followings.next_page_number }}">next</a>
+            <a href="?page={{ followings.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock %}
+
+              

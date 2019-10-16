@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load svg %}
+{% block sidebar %}
+
+    <div class="user-icon u-margin-top-small">
+            <img class="user-icon__img user-pic user-pic--medium" src="{{profile_owner.profile.image.url}}" alt="">
+            <h2 class="user-icon__text" >{{ profile_owner}}</h2>
+    </div>
+
+    <hr>
+    
+    {% if user.is_authenticated and profile_owner != request.user %}
+
+        <form action="{% url 'account:follow' %}" method="POST">
+            {% csrf_token %}
+    
+            {% if is_following %}
+                <button class="btn font-medium" type="submit" name="profile_user" value="{{ profile_owner.username}}">Unfollow</button>
+            {% else %}
+                <button class="btn font-medium" type="submit" name="profile_user" value="{{ profile_owner.username}}">Follow</button>
+            {% endif %}
+    
+            </form> 
+    
+    {% endif %}
+    <hr>
+    <h5> <a href="{% url 'account:following' profile_owner %}">Following </a><small>({{profile_owner.profile.get_following.count}})</small> </h5>
+    <div class="user-icons-container--sidebar">
+        {% for user in profile_owner.profile.get_following|slice:":3" %}
+        <div class="user-icon">
+            <img class="user-icon__img user-pic user-pic--small" src="{{user.profile.image.url}}" alt=""> 
+            <a class="user-icon__link" href="{% url 'account:detail' user.username %}">{{user.username}}</a>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <h5 class="u-margin-top-small" ><a href="{% url 'account:followers' profile_owner %}">Followers </a><small>({{profile_owner.followed_by.all.count}})</small></h5>
+    <div class="user-icons-container--sidebar">
+        {% for profile in profile_owner.followed_by.all|slice:":3" %}
+            <div class="user-icon">
+                    <img class="user-icon__img user-pic user-pic--small" src="{{profile.user.profile.image.url}}" alt=""> 
+                    <a class="user-icon__link" href="{% url 'account:detail' profile.user.username %}">{{profile.user.username}}</a>
+            </div>
+        {% endfor %}
+    </div>
+ 
+    
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<h4>User Posts:</h4>
+<section class="main__content" >
+    {% for userpost in posts %}
+    <hr>
+    <div class="card" >
+    <h4><a href="{% url 'posts:detail' userpost.pk %}">{{ userpost.title}}</a> </h4>
+    <small>( {{ userpost.get_likes }} )<span class="icon-dark"> {% svg 'heart' %} </span>
+        || {{userpost.timestamp|timesince }} <span class="icon-dark"> {% svg 'clock' %} </span>
+    </small>
+    </div>
+
+    <hr>
+    <br>
+    {% endfor %}
+</section>
+
+
+<div class="main__pagination">
+    <span class="step-links">
+        {% if posts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ posts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+        </span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">next</a>
+            <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+
+              

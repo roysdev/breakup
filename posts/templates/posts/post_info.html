@@ -1,0 +1,7 @@
+{% load svg %}
+
+
+<small>( {{ post.get_likes }} )<span class="icon-dark"> {% svg 'heart' %} </span>
+    || {{post.timestamp|timesince }} <span class="icon-dark"> {% svg 'clock' %} </span>
+    || <a href="{% url 'account:detail' post.user %}">{{post.user}}</a>
+</small>

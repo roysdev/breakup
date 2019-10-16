@@ -1,0 +1,22 @@
+go to anaconda.com
+go to download
+choose windows 
+downlolad 3.7 64bit graphical installer
+
+cd into the source folder where break-up yml is
+
+conda create --break-up myenv
+*break-up is the name of yml file
+
+cd to BreakUpDjango
+
+type conda activate break-up
+youll see (break-up)C:\Users.....
+
+type python manage.py runserver
+
+--------
+htmls are under:
+templates
+post/templates
+accounts/templates

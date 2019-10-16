@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Welcome to your break up buddy! Where you can share your break up stories online.</h3>
+<br>
+<section class="main__content" >
+  {% for post in object_list %}
+
+  <div class="card">
+    <a href='{{ post.get_absolute_url }}'><h4 class="title" >{{ post.title }}</h5></a> 
+    {% include 'posts/post_info.html' %}
+  </div>
+    
+  <br>
+  <br>
+
+
+  {% empty %}
+  {% if request.GET.q %}
+  <p>No Post found.</p>
+  {% else %}
+  <p>No Post yet.</p>
+  {% endif %}
+  {% endfor %}
+</section>
+
+
+  {% if is_paginated %}
+  <div class="main__pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}

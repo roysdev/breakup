@@ -1,0 +1,50 @@
+{# Load the tag library #}
+{# Load CSS and JavaScript #}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Share your breakup stories online">
+    <meta name="keywords" content="breakup, buddy">
+    <meta name="author" content="Peejay Reyes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond|Montserrat|Nunito+Sans|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+    <title>Break Up Stories</title>
+    {{ form.media }}
+  </head>
+
+  <body class="container">
+    
+    {% include 'navbar.html' %}
+    
+    <aside class="sidebar"> 
+
+      {% block sidebar %}
+      {% endblock %}
+      {% comment %} <div class="post-organizer">
+          <p>Recent:</p>
+          <p>Favorites:</p>
+          <p>Date</p>
+      </div> {% endcomment %}
+
+    </aside>
+    
+    {% comment %} <aside class="ads" >
+        Ads are here!
+    </aside> {% endcomment %}
+
+    <main class="main">
+
+              {% block content %}
+              {% endblock %}
+
+    </main>
+
+    <!-- <script src="" type="text/javascript" ></script> -->
+    {% include 'footer.html' %}
+
+
+  </body>
+</html>

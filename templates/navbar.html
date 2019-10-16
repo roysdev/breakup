@@ -1,0 +1,31 @@
+{% load svg %}
+
+<nav class="nav">
+
+
+
+  <a class="nav__logo" href="{% url 'home' %}">BreakUp</a>
+  {% include "search_form.html" %}
+  
+
+
+  <ul class="nav__link-container">
+    {% if user.is_authenticated %}
+    <a class="nav__link icons" href="{% url 'posts:create' %}" title="New Post"> {% svg 'pencil2' %}</a>
+
+    <a class="nav__link" href="{% url 'account:detail' username=request.user %}" >{% svg 'user' %}</a>
+    <a class="nav__link" href="{% url 'account:edit' %}" >{% svg 'cog' %}</a>
+
+
+    <a class="nav__link" href="{% url 'logout' %}" >{% svg 'exit' %}</a>
+
+    {% else %}
+    <a class="nav__link" href="{% url 'login' %}" >{% svg 'enter' %}</a>
+    <a class="nav__link" href="{% url 'account:signup' %}" >{% svg 'user-plus' %}</a>
+    {% endif %}
+  </ul>
+
+
+</nav>
+
+

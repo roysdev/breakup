@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="contact">
+    For questions and suggestions email as at ....
+</div>
+<h1>News</h1>
+{% for recent_news in news%}
+<div class="card">
+    <h4>{{recent_news.title}}</h4>
+<p>{{recent_news.content}}</p>
+<small>{{recent_news.user}}</small>
+<small>{{recent_news.timestamp}}</small>
+</div>
+{% empty %}
+No news yet!
+
+{% endfor %}
+<br>
+<br>
+{% for recent_blog in blog %}
+
+<h1>Blogs</h1>
+<div class="card">
+No blog yet!
+<h4>{{recent_blog.title}}</h4>
+<p>{{recent_blog.content}}</p>
+<small>{{recent_blog.user}}</small>
+<small>{{recent_blog.timestamp}}</small>
+</div>
+{% empty %}
+No Blogs Yet!
+
+{% endfor %}
+
+
+{% endblock %}
