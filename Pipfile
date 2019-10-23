@@ -32,7 +32,7 @@ typed-ast = "==1.4.0"
 wincertstore = "==0.2"
 wrapt = "==1.11.1"
 Django = "==2.1.7"
-Pillow = "==6.0.0"
+Pillow = "==6.2.0"
 dj-database-url = "*"
 whitenoise = "*"
 
